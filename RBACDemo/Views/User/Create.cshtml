@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/_LayoutForm.cshtml";
+}
+<form class="bootstrap-frm">
+    <h1>用户管理 - 新增</h1>
+
+    <label>
+        <span>用户名称</span>
+        <input type="text" name="username" placeholder="请输入用户名称" />
+    </label>
+    <label>
+        <span>密码</span>
+        <input type="text" name="password" placeholder="请输入密码" />
+    </label>
+
+    <label>
+        <span>&nbsp;</span>
+        <input type="button" class="button" value="提交" />
+    </label>
+</form>
+@section Script{
+    <script>
+        $(".button").click(function() {
+            $.ajax({
+                url: '@Url.Action("Save","User")',
+                type: "post",
+                data: $("form").serialize(),
+                success: function(data) {
+                    if (data.code === 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.location.reload();
+                    } else {
+                        alert("提交失败");
+                    }
+                }
+            });
+        })
+    </script>
+}

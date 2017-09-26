@@ -1,0 +1,77 @@
+﻿@model IEnumerable<RBACDemo.Models.User>
+@{
+    ViewBag.Title = "用户角色管理";
+}
+
+
+@Html.ActionLink("新增", "Create", null, new { id = "create" })
+<table>
+    <tr>
+        <th>用户名称</th>
+        <th>角色名称</th>
+        <th>操作</th>
+    </tr>
+    @*第一次遍历的是所有的用户*@
+    @foreach (var user in Model)
+    {
+        @*第二次遍历的是每一个用户里的角色*@
+    foreach (var role in user.Roles)
+    {
+        <tr>
+            <td>@user.Username</td>
+            <td>@role.Name</td>
+            <td style="width: 100px">
+                <a class="edit" href="@Url.Action("Edit",new {userId=user.Id ,roleId=role.Id})">编辑</a>
+                @Html.ActionLink("删除", "Delete", new { userId = user.Id, roleId = role.Id }, new { @class = "Delete" })
+            </td>
+        </tr>
+        }
+
+    }
+</table>
+@section Script{
+    <script>
+        $("#create").click(function () {
+            layer.open({
+                type: 2,
+                title: '@ViewBag.Title',
+                shadeClose: true,
+                shade: false,
+                area:['500px','400px'],
+                content: '@Url.Action("Create")'
+            });
+            event.preventDefault();
+        });
+        $(".edit").click(function (event) {
+            var href = $(this).attr("href");
+            var $that = $(this);
+            layer.open({
+                type: 2,
+                title: '@ViewBag.Title',
+                shadeClose: true,
+                shade: false,
+                area: ['500px', '400px'],
+                content: href
+            });
+            event.preventDefault();
+        });
+        $('.delete').click(function (event) {
+            event.preventDefault();
+            var href = $(this).attr("hret");
+            $.ajax({
+                url: href,
+                type: "post",
+                success: function(res) {
+                    if (res.code === 200) {
+                        parent.location.reload();
+                    } else {
+                        alert("删除失败");
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,42 @@
+﻿@model RBACDemo.Models.Role
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/_LayoutForm.cshtml";
+}
+
+<form class="bootstrap-frm">
+    <h1>角色管理 - 编辑</h1>
+    <label>
+        <span>ID</span>
+        <input type="text" name="id" value="@Model.Id" readonly="" />
+    </label>
+    <label>
+        <span>模块名称</span>
+        <input type="text" name="name" value="@Model.Name" placeholder="请输入模块名称" />
+    </label>
+
+    <label>
+        <span>&nbsp;</span>
+        <input type="button" class="button" value="提交" />
+    </label>
+</form>
+@section Script{
+    <script>
+        $(".button").click(function() {
+            $.ajax({
+                url: '@Url.Action("Save","Role")',
+                type: "post",
+                data: $("form").serialize(),
+                success: function(data) {
+                    if (data.code === 200) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        parent.location.reload();
+                    } else {
+                        alert("提交失败");
+                    }
+                }
+            });
+        })
+    </script>
+}

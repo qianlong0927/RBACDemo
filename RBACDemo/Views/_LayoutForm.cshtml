@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/form.css" rel="stylesheet"/>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <div>
+        @RenderBody()
+        @RenderSection("Script",false)
+    </div>
+</body>
+</html>
